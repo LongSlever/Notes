@@ -1,0 +1,7 @@
+A project using Laravel, with basic and intermediate knowledge of Laravel.
+Here, we use middleware to control authentication and also the login process.
+The idea of the project is that you can record notes, make updates and deletions.
+
+I recommend using .env to capture the necessary data to make it easier to understand.
+
+This project was done in conjunction with a Udemy course.

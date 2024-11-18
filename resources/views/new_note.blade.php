@@ -15,7 +15,7 @@
                 <div class="col text-end">
                     <a href="{{ route('home') }}" class="btn btn-outline-danger">
                         <i class="fa-solid fa-xmark"></i>
-                    </a>            
+                    </a>
                 </div>
             </div>
 
@@ -26,17 +26,17 @@
                     <div class="col">
                         <div class="mb-3">
                             <label class="form-label">Note Title</label>
-                            <input type="text" class="form-control bg-primary text-white" name="text_title" value="{{ old('text_title') }}">
+                            <input type="text" class="form-control bg-primary text-white" name="title" value="{{ old('title') }}">
                             {{-- show error --}}
-                            @error('text_title')
+                            @error('title')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Note Text</label>
-                            <textarea class="form-control bg-primary text-white" name="text_note" rows="5">{{ old('text_note') }}</textarea>
+                            <textarea class="form-control bg-primary text-white" name="text" rows="5">{{ old('text') }}</textarea>
                             {{-- show error --}}
-                            @error('text_note')
+                            @error('text')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
@@ -49,7 +49,7 @@
                     </div>
                 </div>
             </form>
-            
+
         </div>
     </div>
 </div>

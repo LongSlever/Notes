@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -11,9 +12,6 @@ class AuthController extends Controller
         return view('login');
     }
 
-    public function logout() {
-        echo 'logout';
-    }
 
     public function loginSubmit(Request $request) {
 
@@ -40,17 +38,54 @@ class AuthController extends Controller
         $username = $request->input('text_username');
         $password = $request->input('text_password');
 
-        //test database connection
 
-        try {
-            DB::connection()->getPdo();
-            echo 'Conection is Ok!';
-        } catch (\PDOException $e) {
-            echo "Connection Failed:" . $e->getMessage();
+
+        //check if user exists
+
+        $user = User::where('username', $username)
+                 ->where('deleted_at', NULL)
+                 ->first();
+
+        if(!$user) {
+            //Use redirect()->back() to return to the previous page, withInput() to retain old input data, and with() to pass errors.
+            return redirect()
+                    ->back()
+                    ->withInput()
+                    ->with('loginError', 'Username ou senha incorretas.');
         }
 
+        //check if passsword is correct
 
+        if(!password_verify($password, $user->password)) {
+            return redirect()
+            ->back()
+            ->withInput()
+            ->with('loginError', 'Username ou senha incorretas.');
+        }
 
+        //update last login
+        $user->last_login = date('Y-m-d H:i:s');
+        $user->save();
 
+        //login users (sessesion)
+
+        session(
+            [
+                'user' => [
+                    'id' => $user->id,
+                    'username' => $user->username
+                ]
+            ]
+                );
+
+    return redirect('/');
     }
+
+    public function logout() {
+        //logout from the application
+        session()->forget('user');
+
+        return redirect()->to('/login');
+    }
+
 }
